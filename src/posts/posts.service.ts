@@ -12,33 +12,6 @@ export interface PostModel {
   commentCount: number;
 }
 
-let posts: PostModel[] = [
-  {
-    id: 1,
-    author: 'a1',
-    title: 't1',
-    content: 'c1',
-    likeCount: 1,
-    commentCount: 1,
-  },
-  {
-    id: 2,
-    author: 'a1',
-    title: 't1',
-    content: 'c1',
-    likeCount: 1,
-    commentCount: 1,
-  },
-  {
-    id: 3,
-    author: 'a1',
-    title: 't1',
-    content: 'c1',
-    likeCount: 1,
-    commentCount: 1,
-  },
-];
-
 @Injectable()
 export class PostsService {
   constructor(
@@ -70,13 +43,13 @@ export class PostsService {
       commentCount: 0,
     });
 
-    const newPost = await this.postsRepository.save(post);
-
-    return newPost;
+    return await this.postsRepository.save(post);
   }
 
-  updatePost(id: number, author: string, title: string, content: string) {
-    const post = posts.find((post) => post.id === Number(id));
+  async updatePost(id: number, author: string, title: string, content: string) {
+    const post = await this.postsRepository.findOne({
+      where: { id },
+    });
 
     if (!post) {
       throw new NotFoundException();
@@ -94,21 +67,19 @@ export class PostsService {
       post.content = content;
     }
 
-    posts = posts.map((prevPost) =>
-      prevPost.id === Number(id) ? post : prevPost,
-    );
-
-    return post;
+    return await this.postsRepository.save(post);
   }
 
-  deletePost(id: number) {
-    const post = posts.find((post) => post.id === Number(id));
+  async deletePost(id: number) {
+    const post = await this.postsRepository.findOne({
+      where: { id },
+    });
 
     if (!post) {
       throw new NotFoundException();
     }
 
-    posts = posts.filter((post) => post.id !== Number(id));
+    await this.postsRepository.delete(id);
 
     return id;
   }
