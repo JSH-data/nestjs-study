@@ -16,6 +16,7 @@ import { PostsModel } from './posts/entities/posts.entity';
       password: 'postgres',
       database: 'postgres',
       entities: [PostsModel],
+      synchronize: true,
     }),
   ],
   controllers: [AppController],

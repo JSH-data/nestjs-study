@@ -43,10 +43,10 @@ let posts: PostModel[] = [
 export class PostsService {
   constructor(
     @InjectRepository(PostsModel)
-    private readonly postRepository: Repository<PostsModel>,
+    private readonly postsRepository: Repository<PostsModel>,
   ) {}
-  getAllPosts(): PostModel[] {
-    return posts;
+  async getAllPosts() {
+    return this.postsRepository.find();
   }
 
   getPostById(id: number) {
