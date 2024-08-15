@@ -1,11 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { UsersModel } from '../../users/entities/users.entity';
 
 @Entity()
 export class PostsModel {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @ManyToOne(() => UsersModel, (user) => user.posts, {
+    nullable: false,
+  })
   author: string;
 
   @Column()
