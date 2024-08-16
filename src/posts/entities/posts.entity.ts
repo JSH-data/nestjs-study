@@ -9,7 +9,7 @@ export class PostsModel {
   @ManyToOne(() => UsersModel, (user) => user.posts, {
     nullable: false,
   })
-  author: string;
+  author: UsersModel;
 
   @Column()
   title: string;
